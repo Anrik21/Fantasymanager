@@ -6,23 +6,38 @@ using System.Threading.Tasks;
 
 namespace Fantasymanager
 {
-    public struct CustomDates
+    public struct CustomDate
     {
-        public int y, m, d;
+        public int y, m, d, h;
+        string date;
 
-        public CustomDates(int year, int month, int day)
+        public CustomDate(int year, int month, int day, int hour)
         {
             y = year;
             m = month;
             d = day;
+            h = hour;
+
+            date = y.ToString() + "-" + m.ToString() + "-" + d.ToString();
+        }
+
+        public override string ToString()
+        { 
+            return date;
         }
     }
 
     interface ICalendarObject<T>
     {
-        CustomDates GetDates { get; set; }
-        List<T> CollectionOfDates { get; set;}
-        string DateName { get; set; }
-        List<T> CollectionOfEvents { get; set; }
+        List<T> GetCollectionOfDates();
+        CalendarEvent GetCalendarEvent();
+    }
+
+    abstract class CalendarEntity : ICalendarObject<CalendarEntity>
+    {
+        abstract public string GetObjectIdentifier();
+        //abstract public CustomDates GetDate();
+        public abstract List<CalendarEntity> GetCollectionOfDates();
+        public abstract CalendarEvent GetCalendarEvent();
     }
 }
