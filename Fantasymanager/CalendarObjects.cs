@@ -55,27 +55,35 @@ namespace Fantasymanager
 
     class CalendarYear : CalendarEntity
     {
+        private List<CalendarEntity> YearsMonths;
+        private List<CalendarEvent> YearsEvents;
+
+        public CalendarYear()
+        {
+            YearsMonths = new List<CalendarEntity>();
+            YearsEvents = new List<CalendarEvent>();
+        }
+
+        public override List<CalendarEntity> GetCollectionOfDates()
+        {
+            return YearsMonths;
+        }
+
+        public override List<CalendarEvent> GetObjectEvents()
+        {
+            return YearsEvents;
+        }
     }
 
     class CalendarMonth : CalendarEntity
     {
-    }
+        private List<CalendarEntity> monthsDays;
+        private List<CalendarEvent> monthsEvents;
 
-    class CalendarDay : CalendarEntity
-    {
-        private string ObjectID;
-        List<CalendarEntity> CalendarHours;
-        CalendarEvent DayEvent;
-    
-        public CalendarDay(CalendarObjects calObj, int ID)
+        public CalendarMonth()
         {
-            CalendarHours = new List<CalendarEntity>(calObj.HoursInDay);
-            ObjectID = "D" + ID.ToString();
-        }
-
-        public override CalendarEvent GetCalendarEvent()
-        {
-            throw new NotImplementedException();
+            monthsDays = new List<CalendarEntity>();
+            monthsEvents = new List<CalendarEvent>();
         }
 
         public override List<CalendarEntity> GetCollectionOfDates()
@@ -83,12 +91,46 @@ namespace Fantasymanager
             throw new NotImplementedException();
         }
 
-        public override string GetObjectIdentifier()
+        public override List<CalendarEvent> GetObjectEvents()
         {
             throw new NotImplementedException();
         }
     }
 
+    class CalendarDay : CalendarEntity
+    {
+        List<CalendarEvent> DayEvents;
+        //private string ObjectID;
+        //List<CalendarEntity> CalendarHours;
+
+        public CalendarDay()
+        {
+            DayEvents = new List<CalendarEvent>();
+        }
+        
+        public override List<CalendarEntity> GetCollectionOfDates()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override List<CalendarEvent> GetObjectEvents()
+        {
+            return DayEvents;
+        }
+    }
+
+    class CalendarEvent 
+    {
+        private string EventDetails;
+        private string EventID;
+
+        public CalendarEvent(string eventInfo, string eventName)
+        {
+            EventDetails = eventInfo;
+            EventID = eventName;
+        }
+    }
+    /*
     class CalendarHour : CalendarEntity
     {
         private string ObjectID;
@@ -117,30 +159,6 @@ namespace Fantasymanager
             return ObjectID;
         }
     }
+    */
 
-    class CalendarEvent : CalendarEntity
-    {
-        private string eventDetails;
-        private string eventID;
-
-        public CalendarEvent(CustomDate date, int eventNR)
-        {
-            eventID = date.ToString() + "E" + eventNR.ToString();
-        }
-
-        public override CalendarEvent GetCalendarEvent()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<CalendarEntity> GetCollectionOfDates()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GetObjectIdentifier()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

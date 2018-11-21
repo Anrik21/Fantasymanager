@@ -30,14 +30,14 @@ namespace Fantasymanager
     interface ICalendarObject<T>
     {
         List<T> GetCollectionOfDates();
-        CalendarEvent GetCalendarEvent();
+        //CalendarEvent GetCalendarEvent();
     }
 
     abstract class CalendarEntity : ICalendarObject<CalendarEntity>
     {
-        abstract public string GetObjectIdentifier();
+        abstract public List<CalendarEvent> GetObjectEvents();
         //abstract public CustomDates GetDate();
         public abstract List<CalendarEntity> GetCollectionOfDates();
-        public abstract CalendarEvent GetCalendarEvent();
+        //public abstract CalendarEvent GetCalendarEvent();
     }
 }
