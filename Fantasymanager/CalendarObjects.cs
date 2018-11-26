@@ -8,12 +8,12 @@ namespace Fantasymanager
 {
     /// <summary>
     /// This is the class for custom names of your calendarobjects
-    /// Shouldn't handle more than naming of the objects.
+    /// Handles general info about your calendar
     /// </summary>
     class CalendarObjects
     {
-        public string YearName { get; private set; }
         public string HourName { get; private set; }
+        public List<string> MonthNames { get; private set; }
 
         public int MonthsInYear { get; private set; }
         public int DaysInMonth { get; private set; }
@@ -24,44 +24,54 @@ namespace Fantasymanager
         /// <param name="date">Always send a date with atleast amount of months in a year, days in a month and hours in day.</param>
         public CalendarObjects(CustomDate date)
         {
-            YearName = "Year";
-            HourName = "Hour";
-
             MonthsInYear = date.m;
             DaysInMonth = date.d;
             HoursInDay = date.h;
-        }
 
-        public CalendarObjects(CustomDate date, string nameOfYear)
-        {
-            YearName = nameOfYear;
             HourName = "Hour";
-
-            MonthsInYear = date.m;
-            DaysInMonth = date.d;
-            HoursInDay = date.h;
+            MonthNames = new List<string>(MonthsInYear-1);
         }
 
-        public CalendarObjects(CustomDate date,string nameOfYear, string nameOfHours)
+        public void SetMonthName(int nrInList, string monthName)
         {
-            YearName = nameOfYear;
+            MonthNames[nrInList] = monthName;
+        }
+        /*
+        public CalendarObjects(CustomDate date, string nameOfHours)
+        {
             HourName = nameOfHours;
 
             MonthsInYear = date.m;
             DaysInMonth = date.d;
             HoursInDay = date.h;
-        }
+        }*/
     }
 
     class CalendarYear : CalendarEntity
     {
         private List<CalendarEntity> YearsMonths;
         private List<CalendarEvent> YearsEvents;
+        public string YearName { get; private set; }
 
-        public CalendarYear()
+        public CalendarYear(CalendarObjects calendarInfo)
         {
-            YearsMonths = new List<CalendarEntity>();
+            YearsMonths = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
             YearsEvents = new List<CalendarEvent>();
+
+            CalendarMonth tempMonth;
+            for (int i = 0; i < YearsMonths.Count; i++)
+            {
+                tempMonth = new CalendarMonth(calendarInfo);
+                YearsMonths[i] = tempMonth;
+            }
+        }
+
+        public void ChangeYearName(string NewName)
+        {
+            if (NewName != null)
+                YearName = NewName;
+            else
+                throw new ArgumentNullException();
         }
 
         public override List<CalendarEntity> GetCollectionOfDates()
@@ -77,23 +87,35 @@ namespace Fantasymanager
 
     class CalendarMonth : CalendarEntity
     {
-        private List<CalendarEntity> monthsDays;
-        private List<CalendarEvent> monthsEvents;
+        private List<CalendarEntity> MonthsDays;
+        private List<CalendarEvent> MonthsEvents;
 
-        public CalendarMonth()
+        public CalendarMonth(CalendarObjects calendarInfo)
         {
-            monthsDays = new List<CalendarEntity>();
-            monthsEvents = new List<CalendarEvent>();
+            MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
+            MonthsEvents = new List<CalendarEvent>();
+
+            CalendarDay tempDay;
+            for (int i = 0; i < calendarInfo.DaysInMonth; i++)
+            {
+                tempDay = new CalendarDay();
+                MonthsDays[i] = tempDay;
+            }
+        }
+
+        public void AddEvent(CalendarEvent calendarEvent)
+        {
+            MonthsEvents.Add(calendarEvent);
         }
 
         public override List<CalendarEntity> GetCollectionOfDates()
         {
-            throw new NotImplementedException();
+            return MonthsDays;
         }
 
         public override List<CalendarEvent> GetObjectEvents()
         {
-            throw new NotImplementedException();
+            return MonthsEvents;
         }
     }
 
@@ -106,6 +128,11 @@ namespace Fantasymanager
         public CalendarDay()
         {
             DayEvents = new List<CalendarEvent>();
+        }
+
+        public void AddEvent(CalendarEvent calendarEvent)
+        {
+            DayEvents.Add(calendarEvent);
         }
         
         public override List<CalendarEntity> GetCollectionOfDates()
