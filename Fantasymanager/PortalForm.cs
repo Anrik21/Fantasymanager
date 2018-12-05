@@ -38,5 +38,12 @@ namespace Fantasymanager
             if (currentSound == 4)
                 System.Media.SystemSounds.Hand.Play();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GeneratorForm generator = new GeneratorForm();
+
+            generator.Show();
+        }
     }
 }
