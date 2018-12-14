@@ -17,7 +17,7 @@ namespace Fantasymanager
 
         public bool FileCreate(string filename)
         {
-
+            throw new NotImplementedException();
 
         }
     }

@@ -41,6 +41,14 @@ namespace Fantasymanager
             Close();
         }
 
+        private void CalendarAdded()
+        {
+            GeneratorChoicebox.Items.Clear();
+
+            foreach (CalendarSettings settings in calendars)
+                GeneratorChoicebox.Items.Add(settings.ToString());
+        }
+
         private void TryAddCalendar_Click(object sender, EventArgs e)
         {
             if (SettingsValidation(MonthInput.Text))
@@ -52,8 +60,17 @@ namespace Fantasymanager
                             CalendarSettings newCalendar = new CalendarSettings(nameInput.Text, Convert.ToInt32(MonthInput.Text),
                                 Convert.ToInt32(DayInput.Text), Convert.ToInt32(HourInput.Text));
 
-                            calendars.Add(newCalendar);
+                            var checkIfDuplicate = calendars.Any(x => x.CalendarName == newCalendar.CalendarName);
 
+                            if (checkIfDuplicate)
+                            {
+                                MessageBox.Show("This calendar is already added!", "Duplicate found");
+                                return;
+                            }
+                            else
+                                calendars.Add(newCalendar);
+
+                            CalendarAdded();
                             nameInput.ResetText();
                             MonthInput.ResetText();
                             DayInput.ResetText();
