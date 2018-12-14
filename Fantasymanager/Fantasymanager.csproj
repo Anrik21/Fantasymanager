@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalendarObjects.cs" />
+    <Compile Include="Filepeon.cs" />
     <Compile Include="PortalForm.cs">
       <SubType>Form</SubType>
     </Compile>

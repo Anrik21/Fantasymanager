@@ -12,12 +12,10 @@ namespace Fantasymanager
 {
     public partial class Dungeonportal : Form
     {
-        Random random;
 
         public Dungeonportal()
         {
             InitializeComponent();
-            random = new Random();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -27,7 +25,7 @@ namespace Fantasymanager
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int currentSound = random.Next(1, 4);
+            int currentSound = new Random().Next(1, 4);
 
             if (currentSound == 1)
                 System.Media.SystemSounds.Beep.Play();
@@ -41,9 +39,13 @@ namespace Fantasymanager
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Vore smutt att ha nån sorts "om generator öppen lås detta fönster"
+            // Fattar inte events nog atm för att implementera
             GeneratorForm generator = new GeneratorForm();
 
             generator.Show();
         }
+
+        
     }
 }

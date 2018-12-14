@@ -12,8 +12,8 @@ namespace Fantasymanager
     class CalendarSettings
     {
         public string CalendarName { get; private set; }
-        public string HourName { get; private set; }
-        public string[] MonthNames { get; private set; }
+        public const string HourName = "hour";
+        public List<string> MonthNames { get; private set; }
 
         public int MonthsInYear { get; private set; }
         public int DaysInMonth { get; private set; }
@@ -32,10 +32,10 @@ namespace Fantasymanager
             DaysInMonth = d;
             HoursInDay = h;
             CalendarName = Name;
+            MonthNames = new List<string>();
 
-            HourName = "Hour";
-            for (int n = 0; n < DaysInMonth; n++)
-                MonthNames[n] = "Month " + n.ToString();
+            for (int n = 0; n < MonthsInYear; n++)
+                MonthNames.Add("Month " + n.ToString());
         }
 
         /// <summary>
@@ -45,33 +45,9 @@ namespace Fantasymanager
         /// <param name="d">Days in a month</param>
         /// <param name="h">Hours in day</param>
         /// <param name="customHourName">A custom name for an hour</param>
-        public CalendarSettings(string Name, int m, int d, int h, string customHourName)
+        /// <param name="customMonthNames">A string[] of names for months - Changed to list cuz is better.</param>
+        public CalendarSettings(string Name, int m, int d, int h, List<string> customMonthNames) : this (Name,m,d,h)
         {
-            MonthsInYear = m;
-            DaysInMonth = d;
-            HoursInDay = h;
-            CalendarName = Name;
-
-            HourName = customHourName;
-            for (int n = 0; n < DaysInMonth; n++)
-                MonthNames[n] = "Month " + n.ToString();
-        }
-        /// <summary>
-        /// Creates a setting for your calendar to be generated around.
-        /// </summary>
-        /// <param name="m">Months in a year</param>
-        /// <param name="d">Days in a month</param>
-        /// <param name="h">Hours in day</param>
-        /// <param name="customHourName">A custom name for an hour</param>
-        /// <param name="customMonthNames">A string[] of names for months</param>
-        public CalendarSettings(string Name, int m, int d, int h, string customHourName, string[] customMonthNames)
-        {
-            MonthsInYear = m;
-            DaysInMonth = d;
-            HoursInDay = h;
-            CalendarName = Name;
-
-            HourName = customHourName;
             MonthNames = customMonthNames;
         }
 
@@ -84,27 +60,20 @@ namespace Fantasymanager
         {
             return CalendarName;
         }
-        /*
-        public CalendarObjects(CustomDate date, string nameOfHours)
-        {
-            HourName = nameOfHours;
-
-            MonthsInYear = date.m;
-            DaysInMonth = date.d;
-            HoursInDay = date.h;
-        }*/
     }
 
     class CalendarYear : CalendarEntity
     {
         private List<CalendarEntity> YearsMonths;
         private List<CalendarEvent> YearsEvents;
+        private int YearNumeral;
         public string YearName { get; private set; }
 
-        public CalendarYear(CalendarSettings calendarInfo)
+        public CalendarYear(CalendarSettings calendarInfo, int ThisYear)
         {
             YearsMonths = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
             YearsEvents = new List<CalendarEvent>();
+            YearNumeral = ThisYear;
 
             CalendarMonth tempMonth;
             for (int i = 0; i < YearsMonths.Count; i++)
