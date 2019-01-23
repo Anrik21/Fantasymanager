@@ -13,6 +13,7 @@ namespace Fantasymanager
     public partial class GeneratorForm : Form
     {
         List<CalendarSettings> calendars;
+        Filepeon GeneratorsFilePeon;
 
         public GeneratorForm()
         {
@@ -29,6 +30,9 @@ namespace Fantasymanager
             {
                 ForgottenRealms
             };
+
+            GeneratorsFilePeon = new Filepeon();
+            
 
             // Är det här jag borde testa att använda subscriber pattern för att lära mig lite om det?
             foreach (CalendarSettings settings in calendars)
@@ -109,14 +113,14 @@ namespace Fantasymanager
                 if(SettingsValidation(genYear2.Text))
                     if(GeneratorChoicebox.SelectedItem != null)
                     {
-                        string tempstring = GeneratorChoicebox.SelectedItem.ToString();
-                        var correctyear = calendars.First(x => x.CalendarName == tempstring);
+                        string selectedCalendarsName = GeneratorChoicebox.SelectedItem.ToString();
+                        var correctyear = calendars.First(x => x.CalendarName == selectedCalendarsName);
 
                         int j, n;
                         j = Convert.ToInt32(genYear1.Text);
                         n = Convert.ToInt32(genYear2.Text);
 
-                        List<CalendarYear> GeneratedCalendar = new List<CalendarYear>();
+                        List<CalendarEntity> GeneratedCalendar = new List<CalendarEntity>();
 
                         if (j < n)
                         {
@@ -128,8 +132,9 @@ namespace Fantasymanager
                         else
                             MessageBox.Show("Dates go from small to big!", "Woops!");
 
-                        MessageBox.Show("Arright generation worked!", "Woops?");
+                        MessageBox.Show("Generation worked! Attempting save", "Woops?");
 
+                        GeneratorsFilePeon.SaveToXML(GeneratedCalendar, selectedCalendarsName);
                     }
         }
     }

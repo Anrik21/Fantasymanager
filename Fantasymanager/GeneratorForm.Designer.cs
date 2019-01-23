@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_exitGenerator = new System.Windows.Forms.Button();
             this.GeneratorChoicebox = new System.Windows.Forms.ListBox();
             this.nameInput = new System.Windows.Forms.TextBox();
             this.MonthInput = new System.Windows.Forms.TextBox();
@@ -45,18 +45,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.button_generateAndSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // button_exitGenerator
             // 
-            this.button1.Location = new System.Drawing.Point(373, 255);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(103, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Stop generating";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_exitGenerator.Location = new System.Drawing.Point(373, 255);
+            this.button_exitGenerator.Name = "button_exitGenerator";
+            this.button_exitGenerator.Size = new System.Drawing.Size(103, 23);
+            this.button_exitGenerator.TabIndex = 0;
+            this.button_exitGenerator.Text = "Stop generating";
+            this.button_exitGenerator.UseVisualStyleBackColor = true;
+            this.button_exitGenerator.Click += new System.EventHandler(this.button1_Click);
             // 
             // GeneratorChoicebox
             // 
@@ -155,6 +155,7 @@
             this.genYear2.Name = "genYear2";
             this.genYear2.Size = new System.Drawing.Size(47, 20);
             this.genYear2.TabIndex = 12;
+            this.genYear2.Text = "1491";
             // 
             // genYear1
             // 
@@ -162,6 +163,7 @@
             this.genYear1.Name = "genYear1";
             this.genYear1.Size = new System.Drawing.Size(66, 20);
             this.genYear1.TabIndex = 13;
+            this.genYear1.Text = "-10000";
             // 
             // label2
             // 
@@ -190,22 +192,22 @@
             this.label4.TabIndex = 16;
             this.label4.Text = "To";
             // 
-            // button2
+            // button_generateAndSave
             // 
-            this.button2.Location = new System.Drawing.Point(392, 39);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(84, 23);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Generate";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button_generateAndSave.Location = new System.Drawing.Point(392, 39);
+            this.button_generateAndSave.Name = "button_generateAndSave";
+            this.button_generateAndSave.Size = new System.Drawing.Size(84, 45);
+            this.button_generateAndSave.TabIndex = 17;
+            this.button_generateAndSave.Text = "Generate and save";
+            this.button_generateAndSave.UseVisualStyleBackColor = true;
+            this.button_generateAndSave.Click += new System.EventHandler(this.button2_Click);
             // 
             // GeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(488, 290);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button_generateAndSave);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -222,7 +224,7 @@
             this.Controls.Add(this.MonthInput);
             this.Controls.Add(this.nameInput);
             this.Controls.Add(this.GeneratorChoicebox);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_exitGenerator);
             this.Name = "GeneratorForm";
             this.Text = "GeneratorForm";
             this.ResumeLayout(false);
@@ -232,7 +234,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_exitGenerator;
         private System.Windows.Forms.ListBox GeneratorChoicebox;
         private System.Windows.Forms.TextBox nameInput;
         private System.Windows.Forms.TextBox MonthInput;
@@ -249,6 +251,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button_generateAndSave;
     }
 }

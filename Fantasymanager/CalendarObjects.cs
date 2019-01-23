@@ -9,7 +9,7 @@ namespace Fantasymanager
     /// <summary>
     /// Handles general info about your calendar
     /// </summary>
-    class CalendarSettings
+    public class CalendarSettings
     {
         public string CalendarName { get; private set; }
         public const string HourName = "hour";
@@ -62,12 +62,17 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarYear : CalendarEntity
+    public class CalendarYear : CalendarEntity
     {
-        private List<CalendarEntity> YearsMonths;
-        private List<CalendarEvent> YearsEvents;
-        private int YearNumeral;
+        public List<CalendarEntity> YearsMonths;
+        public List<CalendarEvent> YearsEvents;
+        public int YearNumeral;
         public string YearName { get; private set; }
+
+        public CalendarYear()
+        {
+            
+        }
 
         public CalendarYear(CalendarSettings calendarInfo, int ThisYear)
         {
@@ -102,10 +107,12 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarMonth : CalendarEntity
+    public class CalendarMonth : CalendarEntity
     {
-        private List<CalendarEntity> MonthsDays;
-        private List<CalendarEvent> MonthsEvents;
+        public List<CalendarEntity> MonthsDays;
+        public List<CalendarEvent> MonthsEvents;
+
+        public CalendarMonth(){}
 
         public CalendarMonth(CalendarSettings calendarInfo)
         {
@@ -136,9 +143,9 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarDay : CalendarEntity
+    public class CalendarDay : CalendarEntity
     {
-        List<CalendarEvent> DayEvents;
+        public List<CalendarEvent> DayEvents;
         //private string ObjectID;
         //List<CalendarEntity> CalendarHours;
 
@@ -163,10 +170,10 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarEvent 
+    public class CalendarEvent 
     {
-        private string EventDetails;
-        private string EventID;
+        public string EventDetails;
+        public string EventID;
 
         public CalendarEvent(string eventInfo, string eventName)
         {

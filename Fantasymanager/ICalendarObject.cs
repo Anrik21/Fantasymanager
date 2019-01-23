@@ -33,11 +33,12 @@ namespace Fantasymanager
         //CalendarEvent GetCalendarEvent();
     }
 
-    abstract class CalendarEntity : ICalendarObject<CalendarEntity>
+    public abstract class CalendarEntity : ICalendarObject<CalendarEntity>
     {
-        abstract public List<CalendarEvent> GetObjectEvents();
-        //abstract public CustomDates GetDate();
+        public abstract List<CalendarEvent> GetObjectEvents();
         public abstract List<CalendarEntity> GetCollectionOfDates();
         //public abstract CalendarEvent GetCalendarEvent();
+        //abstract public CustomDates GetDate();
+
     }
 }
