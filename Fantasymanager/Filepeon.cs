@@ -23,12 +23,16 @@ namespace Fantasymanager
 
         public void SaveToXML(List<CalendarEntity> objToSave, string filename)
         {
-            PeonsXmlSerializer = new XmlSerializer(typeof(CalendarEntity));
+            PeonsXmlSerializer = new XmlSerializer(typeof(List<CalendarEntity>), new Type[] { typeof(CalendarYear) });
             TextWriter writer = new StreamWriter(filename);
 
-            foreach (CalendarEntity entity in objToSave)
-                PeonsXmlSerializer.Serialize(writer, entity);
+            // Removed this looping because it created XML headers between every object which was like 40% overhead. 
+            //    foreach (CalendarEntity entity in objToSave)
+            //  {
+            //    PeonsXmlSerializer.Serialize(writer, entity);
+            //  }
 
+            PeonsXmlSerializer.Serialize(writer, objToSave);
             writer.Close();
         }
 
