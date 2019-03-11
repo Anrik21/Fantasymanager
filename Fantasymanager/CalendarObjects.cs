@@ -67,7 +67,7 @@ namespace Fantasymanager
         public List<CalendarEntity> YearsMonths;
         public List<CalendarEvent> YearsEvents;
         public int YearNumeral;
-        public string YearName { get; private set; }
+        public string YearName { get; set; }
 
         public CalendarYear()
         {
@@ -174,6 +174,11 @@ namespace Fantasymanager
     {
         public string EventDetails;
         public string EventID;
+
+        public CalendarEvent()
+        {
+
+        }
 
         public CalendarEvent(string eventInfo, string eventName)
         {

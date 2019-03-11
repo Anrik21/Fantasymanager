@@ -134,7 +134,7 @@ namespace Fantasymanager
 
                         MessageBox.Show("Generation worked! Attempting save", "Woops?");
 
-                        GeneratorsFilePeon.SaveToXML(GeneratedCalendar, selectedCalendarsName);
+                        GeneratorsFilePeon.SaveToXML(GeneratedCalendar, selectedCalendarsName + ".xml");
                     }
         }
     }
