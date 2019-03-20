@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Fantasymanager
 {
@@ -64,7 +65,10 @@ namespace Fantasymanager
 
     public class CalendarYear : CalendarEntity
     {
+        [XmlArray(ElementName = "Months", IsNullable = false)]
         public List<CalendarEntity> YearsMonths;
+
+        [XmlArray(ElementName = "Events", IsNullable = false)]
         public List<CalendarEvent> YearsEvents;
         public int YearNumeral;
         public string YearName { get; set; }
@@ -76,15 +80,15 @@ namespace Fantasymanager
 
         public CalendarYear(CalendarSettings calendarInfo, int ThisYear)
         {
-            YearsMonths = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
+            YearsMonths = new List<CalendarEntity>(calendarInfo.MonthsInYear);
             YearsEvents = new List<CalendarEvent>();
             YearNumeral = ThisYear;
 
             CalendarMonth tempMonth;
-            for (int i = 0; i < YearsMonths.Count; i++)
+            for (int i = 0; i < YearsMonths.Capacity; i++)
             {
-                tempMonth = new CalendarMonth(calendarInfo);
-                YearsMonths[i] = tempMonth;
+                tempMonth = new CalendarMonth(calendarInfo, i);
+                YearsMonths.Add(tempMonth);// = tempMonth;
             }
         }
 
@@ -111,19 +115,22 @@ namespace Fantasymanager
     {
         public List<CalendarEntity> MonthsDays;
         public List<CalendarEvent> MonthsEvents;
+        public string monthName { set; get; }
 
         public CalendarMonth(){}
 
-        public CalendarMonth(CalendarSettings calendarInfo)
+        public CalendarMonth(CalendarSettings calendarInfo, int nameNr)
         {
-            MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
+            MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth);
             MonthsEvents = new List<CalendarEvent>();
+            monthName = calendarInfo.MonthNames[nameNr];
 
             CalendarDay tempDay;
+            // this is an attempted change
             for (int i = 0; i < calendarInfo.DaysInMonth; i++)
             {
                 tempDay = new CalendarDay();
-                MonthsDays[i] = tempDay;
+                MonthsDays.Add(tempDay);//= tempDay;
             }
         }
 

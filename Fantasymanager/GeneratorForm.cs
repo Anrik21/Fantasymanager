@@ -124,7 +124,7 @@ namespace Fantasymanager
 
                         if (j < n)
                         {
-                            for (int k = j; j <= n; j++)
+                            for (int k = j; k <= n; k++)
                             {
                                 GeneratedCalendar.Add(new CalendarYear(correctyear, k));
                             }
