@@ -12,31 +12,163 @@ namespace Fantasymanager
 {
     public partial class GeneratorForm : Form
     {
-        List<CalendarSettings> calendars;
+        CalendarSettings ourCalendar;
         Filepeon GeneratorsFilePeon;
+        private int guiState;
 
         public GeneratorForm()
         {
             InitializeComponent();
-            //List<string> forgottenRealmsMonths = new List<string>(string[] { "abc"})
-            List<string> forgottenRealmsMonths = new List<string>()
-            {
-                "Hammer", "Alturiak", "Ches", "Tarsahk",
-                "Mirtul", "Kythorn","Flamerule", "Eleasis",
-                "Elient","Marpenoth","Uktar", "Nightal"
-            };
-            CalendarSettings ForgottenRealms = new CalendarSettings("Forgotten realms",12, 30, 24, forgottenRealmsMonths);
-            calendars = new List<CalendarSettings>
-            {
-                ForgottenRealms
-            };
 
             GeneratorsFilePeon = new Filepeon();
-            
+            guiState = 0;
+        }
 
-            // Är det här jag borde testa att använda subscriber pattern för att lära mig lite om det?
-            foreach (CalendarSettings settings in calendars)
-                GeneratorChoicebox.Items.Add(settings.ToString());
+        #region Our 3 main buttons
+        private void NextInput_Click(object sender, EventArgs e)
+        {
+            if (guiState == 0)
+            {
+                if (Validation_NameInput(nameInput) && Validation_NumberInput(MonthInput) && Validation_NumberInput(DayInput) && Validation_NumberInput(HourInput) 
+                    && Validation_SensibleCalendarSizes(MonthInput) && Validation_SensibleCalendarSizes(DayInput) && Validation_SensibleCalendarSizes(HourInput))
+                {
+                    ourCalendar = new CalendarSettings(nameInput.Text, Convert.ToInt32(MonthInput.Text), 
+                                                        Convert.ToInt32(DayInput.Text), Convert.ToInt32(HourInput.Text));
+                    PanelSwapping(Progress_Calendar_Creation);
+                    guiState = 1;
+                }
+                else
+                {
+                    MessageBox.Show("Input error!", "Retry or quit, I'm not your boss.");
+                }
+            }
+            if (guiState == 1)
+            {
+                if (Validation_NumberInput(hDaysinput) && Validation_NameInput(HourNameInput))
+                {
+                    
+                    PanelSwapping(Progress_Calendar_Creation);
+                    guiState = 2;
+                }
+                else
+                {
+                    MessageBox.Show("Input error!", "Retry or quit, I'm not your boss.");
+                }
+            }
+        }
+
+        private void PanelSwapping(Button button)
+        {
+            if (button.Name == "Progress_Calendar_Creation")
+            {
+                if (guiState == 0)
+                {
+                    panel1.Visible = false;
+                    panel1_tutorial.Visible = false;
+
+                    panel2_tutorial.Visible = true;
+                    panel2.Visible = true;
+
+                    if (checkbox_monthsNamesToBeSet.Checked)
+                    {
+                        comboBoxMonthNaming.Enabled = true;
+                        MonthNameInput.Enabled = true;
+                    }
+                    else
+                    {
+                        comboBoxMonthNaming.Enabled = false;
+                        MonthNameInput.Enabled = false;
+                    }
+                    if (checkbox_setCustomHourName.Checked)
+                        HourNameInput.Enabled = true;
+                    else
+                        HourNameInput.Enabled = false;
+                    if (checkbox_hdays.Checked)
+                        hDaysinput.Enabled = true;
+                    else
+                        hDaysinput.Enabled = false;
+                }
+                if (guiState == 1)
+                {
+                    panel2.Visible = false;
+                    panel2_tutorial.Visible = false;
+
+                    panel3_tutorial.Visible = true;
+                    panel3.Visible = true;
+
+                    if (checkbox_leapyears.Checked && checkbox_hdays.Checked)
+                    {
+                        panel3.Enabled = true;
+                    }
+                    else
+                        panel3.Enabled = false;
+
+                    if(checkbox_leapyears.Checked)
+                    {
+                        leapYearInput1.Enabled = true;
+                        leapYearMonth1.Enabled = true;
+                        leapYearMonth2.Enabled = true;
+                    }
+                    else
+                    {
+                        leapYearInput1.Enabled = false;
+                        leapYearMonth1.Enabled = false;
+                        leapYearMonth2.Enabled = false;
+                    }
+
+                    if (checkbox_hdays.Checked)
+                    {
+                        HdaySelectorBox.Enabled = true;
+                        hdayMonthSelector1.Enabled = true;
+                        hdayMonthSelector2.Enabled = true;
+                        hDayNameInput.Enabled = true;
+                    }
+                    else
+                    {
+                        HdaySelectorBox.Enabled = false;
+                        hdayMonthSelector1.Enabled = false;
+                        hdayMonthSelector2.Enabled = false;
+                        hDayNameInput.Enabled = false;
+                    }
+                }
+                if (guiState == 2)
+                {
+                    panel3.Visible = false;
+                    panel3_tutorial.Visible = false;
+
+                    panel4_tutorial.Visible = true;
+                }
+            }
+            if (button.Name == "Regress_Calendar_Creation")
+            {
+                if (guiState == 0)
+                {
+                    panel2_tutorial.Visible = false;
+                    panel2.Visible = false;
+
+                    panel1.Visible = true;
+                    panel1_tutorial.Visible = true;
+                }
+                if (guiState == 1)
+                {
+                    panel3_tutorial.Visible = false;
+                    panel3.Visible = false;
+
+                    panel2.Visible = true;
+                    panel2_tutorial.Visible = true;
+                }
+                if (guiState == 2)
+                {
+                    panel4_tutorial.Visible = false;
+
+                    panel3.Visible = true;
+                    panel3_tutorial.Visible = true;
+                }
+            }
+        }
+
+        private void Regress_Calendar_Creation_Click(object sender, EventArgs e)
+        {
 
         }
 
@@ -44,98 +176,96 @@ namespace Fantasymanager
         {
             Close();
         }
+        #endregion
 
-        private void CalendarAdded()
+        #region Panel2
+        private void Panel2enabled_true(object sender, EventArgs e)
         {
-            GeneratorChoicebox.Items.Clear();
-
-            foreach (CalendarSettings settings in calendars)
-                GeneratorChoicebox.Items.Add(settings.ToString());
+            comboBoxMonthNaming.Items.Clear();
+            for (int i = 1; i <= ourCalendar.MonthsInYear; i++)
+                comboBoxMonthNaming.Items.Add(i);
         }
 
-        private void TryAddCalendar_Click(object sender, EventArgs e)
+        private void Panel2Combobox_changed(object sender, EventArgs e)
+        { 
+            MonthNameInput.Clear();
+
+            MonthNameInput.Text = ourCalendar.MonthNames[Convert.ToInt32(comboBoxMonthNaming.SelectedItem)];
+        }
+
+        private void Panel2Combobox_listselected(object sender, EventArgs e)
         {
-            if (SettingsValidation(MonthInput.Text))
+            if (MonthNameInput.Text != "")
             {
-                if (SettingsValidation(DayInput.Text))
-                    if (SettingsValidation(HourInput.Text))
-                        if (nameInput.Text != null)
-                        {
-                            CalendarSettings newCalendar = new CalendarSettings(nameInput.Text, Convert.ToInt32(MonthInput.Text),
-                                Convert.ToInt32(DayInput.Text), Convert.ToInt32(HourInput.Text));
+                ourCalendar.MonthNames[Convert.ToInt32(comboBoxMonthNaming.SelectedItem)] = MonthNameInput.Text;
+            }
+        }
+        #endregion
 
-                            var checkIfDuplicate = calendars.Any(x => x.CalendarName == newCalendar.CalendarName);
+        #region Input validation
+        /// <summary>
+        /// Validates that the text isn't too short
+        /// </summary>
+        /// <returns>True if input complies with constraints & no exceptions are thrown converting fields wich expect numbers</returns>
+        private bool Validation_NameInput(TextBox item)
+        {
+            if (item.Text.Length <= 0 && item.Text.Length < 4)
+                return false;
 
-                            if (checkIfDuplicate)
-                            {
-                                MessageBox.Show("This calendar is already added!", "Duplicate found");
-                                return;
-                            }
-                            else
-                                calendars.Add(newCalendar);
+            return true;
+        }
 
-                            CalendarAdded();
-                            nameInput.ResetText();
-                            MonthInput.ResetText();
-                            DayInput.ResetText();
-                            HourInput.ResetText();
-                        }
+        /// <summary>
+        /// Checks if a textbox has a convertible number in it
+        /// </summary>
+        /// <param name="item">Textbox with text in it</param>
+        /// <returns>False if it doesn't convert, true if it do</returns>
+        private bool Validation_NumberInput(TextBox item)
+        {
+            try
+            {
+                Convert.ToInt32(item.Text);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the calendar being setup isn't too crazy.
+        /// </summary>
+        /// <param name="item">1 of 3 textboxes, monthinput, dayinput or hourinput</param>
+        /// <returns>True if values are not 0 & within a range</returns>
+        private bool Validation_SensibleCalendarSizes(TextBox item)
+        {
+            if (item.Name == "MonthInput" || item.Name == "DayInput" || item.Name == "HourInput")
+            {
+                if (item.Name == "MonthInput")
+                {
+                    if (Convert.ToInt32(item.Text) == 0 && Convert.ToInt32(MonthInput.Text) > 300)
+                        return false;
+                }
+                if (item.Name == "DayInput")
+                {
+                    if (Convert.ToInt32(DayInput.Text) == 0 && Convert.ToInt32(DayInput.Text) > 3000)
+                        return false;
+                }
+                if (item.Name == "HourInput")
+                {
+                    if (Convert.ToInt32(HourInput.Text) == 0 && Convert.ToInt32(HourInput.Text) > 100)
+                        return false;
+                }
             }
             else
-                System.Media.SystemSounds.Asterisk.Play();
+                return false;
+
+            return true;
         }
 
-        private bool SettingsValidation(string input)
-        {
-            if (input != null && input != "")
-            {
-                try
-                {
-                    int tester = Convert.ToInt32(input);
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show("Everything in the boxes for Y/D/H needs to be numbers!", "Format exception");
-                    return false;
-                }
+        #endregion
 
-                return true;
-            }
-            else
-                MessageBox.Show("Input can't be nothing!", "Input error");
-
-            return false;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (SettingsValidation(genYear1.Text))
-                if(SettingsValidation(genYear2.Text))
-                    if(GeneratorChoicebox.SelectedItem != null)
-                    {
-                        string selectedCalendarsName = GeneratorChoicebox.SelectedItem.ToString();
-                        var correctyear = calendars.First(x => x.CalendarName == selectedCalendarsName);
-
-                        int j, n;
-                        j = Convert.ToInt32(genYear1.Text);
-                        n = Convert.ToInt32(genYear2.Text);
-
-                        List<CalendarEntity> GeneratedCalendar = new List<CalendarEntity>();
-
-                        if (j < n)
-                        {
-                            for (int k = j; k <= n; k++)
-                            {
-                                GeneratedCalendar.Add(new CalendarYear(correctyear, k));
-                            }
-                        }
-                        else
-                            MessageBox.Show("Dates go from small to big!", "Woops!");
-
-                        MessageBox.Show("Generation worked! Attempting save", "Woops?");
-
-                        GeneratorsFilePeon.SaveToXML(GeneratedCalendar, selectedCalendarsName + ".xml");
-                    }
-        }
     }
 }

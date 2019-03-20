@@ -8,18 +8,27 @@ using System.Xml.Serialization;
 namespace Fantasymanager
 {
     /// <summary>
-    /// Handles general info about your calendar
+    /// Handles all relevant info about your calendar & is the backbone of the GUI
     /// </summary>
     public class CalendarSettings
     {
         public string CalendarName { get; private set; }
-        public const string HourName = "hour";
+        public string HourName { get; private set; }
         public List<string> MonthNames { get; private set; }
 
         public int MonthsInYear { get; private set; }
         public int DaysInMonth { get; private set; }
         public int HoursInDay { get; private set; }
-       
+
+        public int LeapYearOccurence { get; private set; }
+        public int LeapYearDay { get; private set; }
+
+        public int HolidaysAmount { get; private set; }
+        public List<int> HolidaysDates { get; private set; }
+        public List<string> HolidaysNames { get; private set; }
+
+        public int DaysInYear { get; private set; }
+
         /// <summary>
         /// Creates a setting for your calendar to be generated around.
         /// </summary>
@@ -33,42 +42,51 @@ namespace Fantasymanager
             DaysInMonth = d;
             HoursInDay = h;
             CalendarName = Name;
-            MonthNames = new List<string>();
 
-            for (int n = 0; n < MonthsInYear; n++)
-                MonthNames.Add("Month " + n.ToString());
+            DaysInYear = DaysInMonth * MonthsInYear;
+            MonthNames = new List<string>(new string[m]);
+        }
+
+        public void SetHolidays (int holidays)
+        {
+            HolidaysAmount = holidays;
+            HolidaysDates = new List<int>(holidays);
+        }
+
+        public void SetHolidayName(string holidayName, int holidayNR)
+        {
+            HolidaysNames[holidayNR] = holidayName;
+        }
+
+        public void SetMonthName(string monthName, int monthNR)
+        {
+            MonthNames[monthNR] = monthName;
         }
 
         /// <summary>
-        /// Creates a setting for your calendar to be generated around.
+        /// Does what it says on the tin. Might throw Argumentoutofrange exception!
         /// </summary>
-        /// <param name="m">Months in a year</param>
-        /// <param name="d">Days in a month</param>
-        /// <param name="h">Hours in day</param>
-        /// <param name="customHourName">A custom name for an hour</param>
-        /// <param name="customMonthNames">A string[] of names for months - Changed to list cuz is better.</param>
-        public CalendarSettings(string Name, int m, int d, int h, List<string> customMonthNames) : this (Name,m,d,h)
+        /// <param name="leapOccurence">How often a leap year occurs. Must be greater than 0</param>
+        /// <param name="leapDay">On which day of the year the leapday occurs</param>
+        public void SetLeapYears(int leapOccurence, int leapDay)
         {
-            MonthNames = customMonthNames;
-        }
+            if (leapOccurence <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(leapOccurence)} must be greater than 0");
+            if (leapDay < 1 && leapDay > DaysInYear)
+                throw new ArgumentOutOfRangeException($"{nameof(leapOccurence)} must be greater than 0");
 
-        public void SetMonthName(int nrInList, string monthName)
-        {
-            MonthNames[nrInList] = monthName;
+            LeapYearOccurence = leapOccurence;
         }
 
         public override string ToString()
         {
-            return CalendarName;
+            return "Settings for " + CalendarName;
         }
     }
 
     public class CalendarYear : CalendarEntity
     {
-        [XmlArray(ElementName = "Months", IsNullable = false)]
         public List<CalendarEntity> YearsMonths;
-
-        [XmlArray(ElementName = "Events", IsNullable = false)]
         public List<CalendarEvent> YearsEvents;
         public int YearNumeral;
         public string YearName { get; set; }
