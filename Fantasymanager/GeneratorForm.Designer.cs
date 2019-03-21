@@ -70,13 +70,13 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.leapYearMonth2 = new System.Windows.Forms.TextBox();
+            this.hdaySelector2 = new System.Windows.Forms.TextBox();
             this.hDayNameInput = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.HdaySelectorBox = new System.Windows.Forms.ComboBox();
-            this.hdayMonthSelector2 = new System.Windows.Forms.ComboBox();
             this.hdayMonthSelector1 = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.leapYearMonth2 = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
             this.leapYearMonth1 = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
@@ -87,11 +87,9 @@
             this.label20 = new System.Windows.Forms.Label();
             this.Regress_Calendar_Creation = new System.Windows.Forms.Button();
             this.panel4_tutorial = new System.Windows.Forms.Panel();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
+            this.infoDumpBeforeSave = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel1_tutorial.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -103,13 +101,14 @@
             // 
             // button_exitGenerator
             // 
-            this.button_exitGenerator.Location = new System.Drawing.Point(757, 504);
+            this.button_exitGenerator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_exitGenerator.Location = new System.Drawing.Point(222, 249);
             this.button_exitGenerator.Name = "button_exitGenerator";
             this.button_exitGenerator.Size = new System.Drawing.Size(103, 23);
             this.button_exitGenerator.TabIndex = 0;
             this.button_exitGenerator.Text = "Exit";
             this.button_exitGenerator.UseVisualStyleBackColor = true;
-            this.button_exitGenerator.Click += new System.EventHandler(this.button1_Click);
+            this.button_exitGenerator.Click += new System.EventHandler(this.Button1_Click);
             // 
             // nameInput
             // 
@@ -192,7 +191,7 @@
             // Progress_Calendar_Creation
             // 
             this.Progress_Calendar_Creation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Progress_Calendar_Creation.Location = new System.Drawing.Point(947, 504);
+            this.Progress_Calendar_Creation.Location = new System.Drawing.Point(412, 249);
             this.Progress_Calendar_Creation.Name = "Progress_Calendar_Creation";
             this.Progress_Calendar_Creation.Size = new System.Drawing.Size(75, 23);
             this.Progress_Calendar_Creation.TabIndex = 11;
@@ -249,6 +248,8 @@
             // checkbox_hdays
             // 
             this.checkbox_hdays.AutoSize = true;
+            this.checkbox_hdays.Checked = true;
+            this.checkbox_hdays.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkbox_hdays.Location = new System.Drawing.Point(6, 175);
             this.checkbox_hdays.Name = "checkbox_hdays";
             this.checkbox_hdays.Size = new System.Drawing.Size(207, 17);
@@ -271,6 +272,8 @@
             // checkbox_leapyears
             // 
             this.checkbox_leapyears.AutoSize = true;
+            this.checkbox_leapyears.Checked = true;
+            this.checkbox_leapyears.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkbox_leapyears.Location = new System.Drawing.Point(6, 153);
             this.checkbox_leapyears.Name = "checkbox_leapyears";
             this.checkbox_leapyears.Size = new System.Drawing.Size(140, 17);
@@ -281,6 +284,8 @@
             // checkbox_setCustomHourName
             // 
             this.checkbox_setCustomHourName.AutoSize = true;
+            this.checkbox_setCustomHourName.Checked = true;
+            this.checkbox_setCustomHourName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkbox_setCustomHourName.Location = new System.Drawing.Point(6, 130);
             this.checkbox_setCustomHourName.Name = "checkbox_setCustomHourName";
             this.checkbox_setCustomHourName.Size = new System.Drawing.Size(139, 17);
@@ -332,13 +337,13 @@
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.comboBoxMonthNaming);
-            this.panel2.Enabled = false;
-            this.panel2.Location = new System.Drawing.Point(514, 35);
+            this.panel2.Location = new System.Drawing.Point(12, 32);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(217, 197);
             this.panel2.TabIndex = 18;
             this.panel2.Visible = false;
             this.panel2.EnabledChanged += new System.EventHandler(this.Panel2enabled_true);
+            this.panel2.VisibleChanged += new System.EventHandler(this.Panel2Combobox_changed);
             // 
             // hDaysinput
             // 
@@ -347,6 +352,7 @@
             this.hDaysinput.Name = "hDaysinput";
             this.hDaysinput.Size = new System.Drawing.Size(21, 20);
             this.hDaysinput.TabIndex = 25;
+            this.hDaysinput.Text = "5";
             // 
             // label24
             // 
@@ -373,6 +379,7 @@
             this.HourNameInput.Name = "HourNameInput";
             this.HourNameInput.Size = new System.Drawing.Size(112, 20);
             this.HourNameInput.TabIndex = 22;
+            this.HourNameInput.Text = "bell";
             // 
             // label10
             // 
@@ -432,10 +439,11 @@
             // panel2_tutorial
             // 
             this.panel2_tutorial.Controls.Add(this.label11);
-            this.panel2_tutorial.Location = new System.Drawing.Point(757, 35);
+            this.panel2_tutorial.Location = new System.Drawing.Point(267, 32);
             this.panel2_tutorial.Name = "panel2_tutorial";
             this.panel2_tutorial.Size = new System.Drawing.Size(217, 197);
             this.panel2_tutorial.TabIndex = 19;
+            this.panel2_tutorial.Visible = false;
             // 
             // label11
             // 
@@ -455,29 +463,30 @@
             this.panel3_tutorial.Controls.Add(this.label14);
             this.panel3_tutorial.Controls.Add(this.label15);
             this.panel3_tutorial.Controls.Add(this.label16);
-            this.panel3_tutorial.Location = new System.Drawing.Point(245, 270);
+            this.panel3_tutorial.Location = new System.Drawing.Point(267, 32);
             this.panel3_tutorial.Name = "panel3_tutorial";
             this.panel3_tutorial.Size = new System.Drawing.Size(217, 197);
             this.panel3_tutorial.TabIndex = 20;
+            this.panel3_tutorial.Visible = false;
             // 
             // label12
             // 
             this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label12.Location = new System.Drawing.Point(12, 116);
+            this.label12.Location = new System.Drawing.Point(6, 131);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(185, 49);
+            this.label12.Size = new System.Drawing.Size(207, 64);
             this.label12.TabIndex = 18;
-            this.label12.Text = "None of the values here can be zero or less than zero. Click next when you\'ve inp" +
-    "utted everything";
+            this.label12.Text = "Then choose a month which it happens after. Then give it a name (saving is done a" +
+    "s you leave control, remember that!)";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 84);
+            this.label13.Location = new System.Drawing.Point(3, 105);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(171, 13);
+            this.label13.Size = new System.Drawing.Size(120, 13);
             this.label13.TabIndex = 17;
-            this.label13.Text = "How many hours there are in a day";
+            this.label13.Text = "Select the holiday to set";
             // 
             // label14
             // 
@@ -507,13 +516,13 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.leapYearMonth2);
+            this.panel3.Controls.Add(this.hdaySelector2);
             this.panel3.Controls.Add(this.hDayNameInput);
             this.panel3.Controls.Add(this.label26);
             this.panel3.Controls.Add(this.HdaySelectorBox);
-            this.panel3.Controls.Add(this.hdayMonthSelector2);
             this.panel3.Controls.Add(this.hdayMonthSelector1);
             this.panel3.Controls.Add(this.label25);
-            this.panel3.Controls.Add(this.leapYearMonth2);
             this.panel3.Controls.Add(this.label23);
             this.panel3.Controls.Add(this.leapYearMonth1);
             this.panel3.Controls.Add(this.label21);
@@ -522,10 +531,29 @@
             this.panel3.Controls.Add(this.label18);
             this.panel3.Controls.Add(this.label19);
             this.panel3.Controls.Add(this.label20);
-            this.panel3.Location = new System.Drawing.Point(18, 270);
+            this.panel3.Location = new System.Drawing.Point(12, 32);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(217, 197);
             this.panel3.TabIndex = 19;
+            this.panel3.Visible = false;
+            this.panel3.VisibleChanged += new System.EventHandler(this.Panel3OnVisibleChange);
+            // 
+            // leapYearMonth2
+            // 
+            this.leapYearMonth2.Location = new System.Drawing.Point(124, 67);
+            this.leapYearMonth2.Name = "leapYearMonth2";
+            this.leapYearMonth2.ReadOnly = true;
+            this.leapYearMonth2.Size = new System.Drawing.Size(70, 20);
+            this.leapYearMonth2.TabIndex = 32;
+            // 
+            // hdaySelector2
+            // 
+            this.hdaySelector2.Enabled = false;
+            this.hdaySelector2.Location = new System.Drawing.Point(124, 147);
+            this.hdaySelector2.Name = "hdaySelector2";
+            this.hdaySelector2.ReadOnly = true;
+            this.hdaySelector2.Size = new System.Drawing.Size(70, 20);
+            this.hdaySelector2.TabIndex = 26;
             // 
             // hDayNameInput
             // 
@@ -534,6 +562,7 @@
             this.hDayNameInput.Name = "hDayNameInput";
             this.hDayNameInput.Size = new System.Drawing.Size(112, 20);
             this.hDayNameInput.TabIndex = 26;
+            this.hDayNameInput.Leave += new System.EventHandler(this.OnNeedToSaveHoliday);
             // 
             // label26
             // 
@@ -552,24 +581,18 @@
             this.HdaySelectorBox.Name = "HdaySelectorBox";
             this.HdaySelectorBox.Size = new System.Drawing.Size(70, 21);
             this.HdaySelectorBox.TabIndex = 30;
-            // 
-            // hdayMonthSelector2
-            // 
-            this.hdayMonthSelector2.Enabled = false;
-            this.hdayMonthSelector2.FormattingEnabled = true;
-            this.hdayMonthSelector2.Location = new System.Drawing.Point(124, 139);
-            this.hdayMonthSelector2.Name = "hdayMonthSelector2";
-            this.hdayMonthSelector2.Size = new System.Drawing.Size(70, 21);
-            this.hdayMonthSelector2.TabIndex = 29;
+            this.HdaySelectorBox.SelectedIndexChanged += new System.EventHandler(this.OnHolidayNRSelectorChange);
+            this.HdaySelectorBox.SelectionChangeCommitted += new System.EventHandler(this.OnHdaySelectorCommit);
             // 
             // hdayMonthSelector1
             // 
             this.hdayMonthSelector1.Enabled = false;
             this.hdayMonthSelector1.FormattingEnabled = true;
-            this.hdayMonthSelector1.Location = new System.Drawing.Point(2, 139);
+            this.hdayMonthSelector1.Location = new System.Drawing.Point(3, 147);
             this.hdayMonthSelector1.Name = "hdayMonthSelector1";
             this.hdayMonthSelector1.Size = new System.Drawing.Size(70, 21);
             this.hdayMonthSelector1.TabIndex = 28;
+            this.hdayMonthSelector1.SelectedValueChanged += new System.EventHandler(this.OnHdaySelectorCommit);
             // 
             // label25
             // 
@@ -579,16 +602,6 @@
             this.label25.Size = new System.Drawing.Size(25, 13);
             this.label25.TabIndex = 27;
             this.label25.Text = "and";
-            // 
-            // leapYearMonth2
-            // 
-            this.leapYearMonth2.AccessibleName = "";
-            this.leapYearMonth2.Enabled = false;
-            this.leapYearMonth2.FormattingEnabled = true;
-            this.leapYearMonth2.Location = new System.Drawing.Point(124, 62);
-            this.leapYearMonth2.Name = "leapYearMonth2";
-            this.leapYearMonth2.Size = new System.Drawing.Size(70, 21);
-            this.leapYearMonth2.TabIndex = 26;
             // 
             // label23
             // 
@@ -604,10 +617,11 @@
             this.leapYearMonth1.AccessibleName = "";
             this.leapYearMonth1.Enabled = false;
             this.leapYearMonth1.FormattingEnabled = true;
-            this.leapYearMonth1.Location = new System.Drawing.Point(6, 62);
+            this.leapYearMonth1.Location = new System.Drawing.Point(6, 67);
             this.leapYearMonth1.Name = "leapYearMonth1";
             this.leapYearMonth1.Size = new System.Drawing.Size(70, 21);
             this.leapYearMonth1.TabIndex = 24;
+            this.leapYearMonth1.SelectionChangeCommitted += new System.EventHandler(this.OnLeapYearSelectorCommit);
             // 
             // label21
             // 
@@ -635,6 +649,7 @@
             this.leapYearInput1.Name = "leapYearInput1";
             this.leapYearInput1.Size = new System.Drawing.Size(33, 20);
             this.leapYearInput1.TabIndex = 2;
+            this.leapYearInput1.Text = "4";
             // 
             // label18
             // 
@@ -648,7 +663,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(4, 110);
+            this.label19.Location = new System.Drawing.Point(3, 105);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(42, 13);
             this.label19.TabIndex = 9;
@@ -657,7 +672,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(4, 123);
+            this.label20.Location = new System.Drawing.Point(3, 131);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(59, 13);
             this.label20.TabIndex = 10;
@@ -667,7 +682,7 @@
             // 
             this.Regress_Calendar_Creation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Regress_Calendar_Creation.Enabled = false;
-            this.Regress_Calendar_Creation.Location = new System.Drawing.Point(866, 504);
+            this.Regress_Calendar_Creation.Location = new System.Drawing.Point(331, 249);
             this.Regress_Calendar_Creation.Name = "Regress_Calendar_Creation";
             this.Regress_Calendar_Creation.Size = new System.Drawing.Size(75, 23);
             this.Regress_Calendar_Creation.TabIndex = 21;
@@ -677,43 +692,34 @@
             // 
             // panel4_tutorial
             // 
-            this.panel4_tutorial.Controls.Add(this.label27);
-            this.panel4_tutorial.Controls.Add(this.label28);
+            this.panel4_tutorial.AutoScroll = true;
+            this.panel4_tutorial.Controls.Add(this.infoDumpBeforeSave);
             this.panel4_tutorial.Controls.Add(this.label29);
             this.panel4_tutorial.Controls.Add(this.label30);
-            this.panel4_tutorial.Controls.Add(this.label31);
-            this.panel4_tutorial.Location = new System.Drawing.Point(514, 270);
+            this.panel4_tutorial.Location = new System.Drawing.Point(12, 32);
             this.panel4_tutorial.Name = "panel4_tutorial";
-            this.panel4_tutorial.Size = new System.Drawing.Size(434, 197);
+            this.panel4_tutorial.Size = new System.Drawing.Size(472, 197);
             this.panel4_tutorial.TabIndex = 33;
+            this.panel4_tutorial.Visible = false;
+            this.panel4_tutorial.VisibleChanged += new System.EventHandler(this.OnPanel4VisibilityChange);
             // 
-            // label27
+            // infoDumpBeforeSave
             // 
-            this.label27.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label27.Location = new System.Drawing.Point(12, 116);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(185, 49);
-            this.label27.TabIndex = 18;
-            this.label27.Text = "None of the values here can be zero or less than zero. Click next when you\'ve inp" +
-    "utted everything";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(3, 84);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(171, 13);
-            this.label28.TabIndex = 17;
-            this.label28.Text = "How many hours there are in a day";
+            this.infoDumpBeforeSave.AutoSize = true;
+            this.infoDumpBeforeSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.infoDumpBeforeSave.Location = new System.Drawing.Point(9, 31);
+            this.infoDumpBeforeSave.Name = "infoDumpBeforeSave";
+            this.infoDumpBeforeSave.Size = new System.Drawing.Size(2, 15);
+            this.infoDumpBeforeSave.TabIndex = 18;
             // 
             // label29
             // 
             this.label29.AutoSize = true;
             this.label29.Location = new System.Drawing.Point(3, 10);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(143, 13);
+            this.label29.Size = new System.Drawing.Size(208, 13);
             this.label29.TabIndex = 15;
-            this.label29.Text = "How often a leapyear occurs";
+            this.label29.Text = "Double check everything before you save!";
             // 
             // label30
             // 
@@ -723,20 +729,11 @@
             this.label30.Size = new System.Drawing.Size(0, 13);
             this.label30.TabIndex = 14;
             // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(3, 62);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(129, 13);
-            this.label31.TabIndex = 16;
-            this.label31.Text = "When the leapday occurs";
-            // 
             // GeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1034, 539);
+            this.ClientSize = new System.Drawing.Size(499, 284);
             this.Controls.Add(this.panel4_tutorial);
             this.Controls.Add(this.Regress_Calendar_Creation);
             this.Controls.Add(this.panel3_tutorial);
@@ -821,18 +818,16 @@
         private System.Windows.Forms.TextBox hDayNameInput;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ComboBox HdaySelectorBox;
-        private System.Windows.Forms.ComboBox hdayMonthSelector2;
         private System.Windows.Forms.ComboBox hdayMonthSelector1;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.ComboBox leapYearMonth2;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.ComboBox leapYearMonth1;
         private System.Windows.Forms.Button Regress_Calendar_Creation;
         private System.Windows.Forms.Panel panel4_tutorial;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label infoDumpBeforeSave;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox hdaySelector2;
+        private System.Windows.Forms.TextBox leapYearMonth2;
     }
 }

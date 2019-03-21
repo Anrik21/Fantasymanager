@@ -12,23 +12,26 @@ namespace Fantasymanager
     /// </summary>
     public class CalendarSettings
     {
-        public string CalendarName { get; private set; }
-        public string HourName { get; private set; }
-        public List<string> MonthNames { get; private set; }
+        public string CalendarName { get; set; }
+        public string HourName { get; set; }
+        public string HourNamePlural { get; set; }
+        public List<string> MonthNames { get; set; }
 
-        public int MonthsInYear { get; private set; }
-        public int DaysInMonth { get; private set; }
-        public int HoursInDay { get; private set; }
+        public int MonthsInYear { get; set; }
+        public int DaysInMonth { get; set; }
+        public int HoursInDay { get; set; }
 
-        public int LeapYearOccurence { get; private set; }
-        public int LeapYearDay { get; private set; }
+        public int LeapYearOccurence { get; set; }
+        public int LeapYearDay { get; set; }
+        public string LeapYearDayName { get; set; }
 
-        public int HolidaysAmount { get; private set; }
-        public List<int> HolidaysDates { get; private set; }
-        public List<string> HolidaysNames { get; private set; }
+        public int HolidaysAmount { get; set; }
+        public List<int> HolidaysDates { get; set; }
+        public List<string> HolidaysNames { get; set; }
 
-        public int DaysInYear { get; private set; }
+        public int DaysInYear { get; set; }
 
+        #region setup & gui functions
         /// <summary>
         /// Creates a setting for your calendar to be generated around.
         /// </summary>
@@ -46,11 +49,18 @@ namespace Fantasymanager
             DaysInYear = DaysInMonth * MonthsInYear;
             MonthNames = new List<string>(new string[m]);
         }
+        /// <summary>
+        /// Also comes with parameterless (serialization), could still work
+        /// </summary>
+        public CalendarSettings() { } 
 
         public void SetHolidays (int holidays)
         {
             HolidaysAmount = holidays;
-            HolidaysDates = new List<int>(holidays);
+            HolidaysDates = new List<int>(new int[holidays]);
+            HolidaysNames = new List<string>(new string[holidays]);
+
+            DaysInYear = (DaysInMonth * MonthsInYear) + holidays;
         }
 
         public void SetHolidayName(string holidayName, int holidayNR)
@@ -58,9 +68,39 @@ namespace Fantasymanager
             HolidaysNames[holidayNR] = holidayName;
         }
 
+        public void SetHolidayDate(int holidayNR,int holidayDay)
+        {
+            HolidaysDates[holidayNR -1] = holidayDay;
+        }
+        
+        public void SetHourName(string name, string pluralName)
+        {
+            HourName = name;
+            HourNamePlural = pluralName;
+        }
+
         public void SetMonthName(string monthName, int monthNR)
         {
             MonthNames[monthNR] = monthName;
+        }
+
+        public int GetMonthNr(string monthName)
+        {
+            for (int i = 0; i < MonthNames.Capacity; i++)
+                if (monthName == MonthNames[i])
+                    return i;
+
+            return 2000;
+        }
+
+        public void SaveAHoliday(int whichHoliday, string holidayName)
+        {
+            HolidaysNames[whichHoliday-1] = holidayName;
+        }
+
+        public string GetAHolidayName(int whichHoliday)
+        {
+            return HolidaysNames[whichHoliday - 1];
         }
 
         /// <summary>
@@ -76,11 +116,28 @@ namespace Fantasymanager
                 throw new ArgumentOutOfRangeException($"{nameof(leapOccurence)} must be greater than 0");
 
             LeapYearOccurence = leapOccurence;
+            LeapYearDay = leapDay;
         }
-
+        #endregion
         public override string ToString()
         {
-            return "Settings for " + CalendarName;
+            string tempstring1 = "";
+            string tempstring2 = "";
+            string tempstring3 = "";
+
+            foreach (string name in MonthNames)
+                tempstring1 = tempstring1 + ", " + name;
+
+            foreach (int holidayDate in HolidaysDates)
+                tempstring2 = tempstring2 + ", " + holidayDate.ToString();
+
+            foreach (string name in HolidaysNames)
+                tempstring3 = tempstring3 + ", " + name;
+
+            return nameof(CalendarName) + ": " + CalendarName + "\n" + nameof(HourName) + ": " + HourName + "\n" + nameof(HourNamePlural) + ": " + HourNamePlural + "\n" +
+                nameof(MonthNames) + ": " + tempstring1 + "\n" + nameof(MonthsInYear) + ": " + MonthsInYear + "\n" + nameof(DaysInMonth) + ": " + DaysInMonth + "\n" +
+                nameof(HoursInDay) + ": " + HoursInDay + "\n" + nameof(LeapYearOccurence) + ": " + LeapYearOccurence + "\n" + nameof(LeapYearDay) + ": " + LeapYearDay + "\n" +
+                nameof(HolidaysAmount) + ": " + HolidaysAmount + "\n" + nameof(HolidaysDates) + ": " + tempstring2 + "\n" + nameof(HolidaysNames) + ": " + tempstring3 + "\n";
         }
     }
 
@@ -133,7 +190,7 @@ namespace Fantasymanager
     {
         public List<CalendarEntity> MonthsDays;
         public List<CalendarEvent> MonthsEvents;
-        public string monthName { set; get; }
+        public string MonthName { set; get; }
 
         public CalendarMonth(){}
 
@@ -141,7 +198,7 @@ namespace Fantasymanager
         {
             MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth);
             MonthsEvents = new List<CalendarEvent>();
-            monthName = calendarInfo.MonthNames[nameNr];
+            MonthName = calendarInfo.MonthNames[nameNr];
 
             CalendarDay tempDay;
             // this is an attempted change
