@@ -3,66 +3,167 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Fantasymanager
 {
     /// <summary>
-    /// This is the class for custom names of your calendarobjects
-    /// Handles general info about your calendar
+    /// Handles all relevant info about your calendar & is the backbone of the GUI
     /// </summary>
-    class CalendarObjects
+    public class CalendarSettings
     {
-        public string HourName { get; private set; }
-        public List<string> MonthNames { get; private set; }
+        public string CalendarName { get; set; }
+        public string HourName { get; set; }
+        public string HourNamePlural { get; set; }
+        public List<string> MonthNames { get; set; }
 
-        public int MonthsInYear { get; private set; }
-        public int DaysInMonth { get; private set; }
-        public int HoursInDay { get; private set; }
+        public int MonthsInYear { get; set; }
+        public int DaysInMonth { get; set; }
+        public int HoursInDay { get; set; }
+
+        public int LeapYearOccurence { get; set; }
+        public int LeapYearDay { get; set; }
+        public string LeapYearDayName { get; set; }
+
+        public int HolidaysAmount { get; set; }
+        public List<int> HolidaysDates { get; set; }
+        public List<string> HolidaysNames { get; set; }
+
+        public int DaysInYear { get; set; }
+
+        #region setup & gui functions
         /// <summary>
-        /// For the creation of the dates. 
+        /// Creates a setting for your calendar to be generated around.
         /// </summary>
-        /// <param name="date">Always send a date with atleast amount of months in a year, days in a month and hours in day.</param>
-        public CalendarObjects(CustomDate date)
+        /// <param name="Name">Your calendars name. Example: "Forgotten realms"</param>
+        /// <param name="m">Months in a year</param>
+        /// <param name="d">Days in a month</param>
+        /// <param name="h">Hours in day</param>
+        public CalendarSettings(string Name, int m, int d, int h)
         {
-            MonthsInYear = date.m;
-            DaysInMonth = date.d;
-            HoursInDay = date.h;
+            MonthsInYear = m;
+            DaysInMonth = d;
+            HoursInDay = h;
+            CalendarName = Name;
 
-            HourName = "Hour";
-            MonthNames = new List<string>(MonthsInYear-1);
+            DaysInYear = DaysInMonth * MonthsInYear;
+            MonthNames = new List<string>(new string[m]);
+        }
+        /// <summary>
+        /// Also comes with parameterless (serialization), could still work
+        /// </summary>
+        public CalendarSettings() { } 
+
+        public void SetHolidays (int holidays)
+        {
+            HolidaysAmount = holidays;
+            HolidaysDates = new List<int>(new int[holidays]);
+            HolidaysNames = new List<string>(new string[holidays]);
+
+            DaysInYear = (DaysInMonth * MonthsInYear) + holidays;
         }
 
-        public void SetMonthName(int nrInList, string monthName)
+        public void SetHolidayName(string holidayName, int holidayNR)
         {
-            MonthNames[nrInList] = monthName;
+            HolidaysNames[holidayNR] = holidayName;
         }
-        /*
-        public CalendarObjects(CustomDate date, string nameOfHours)
-        {
-            HourName = nameOfHours;
 
-            MonthsInYear = date.m;
-            DaysInMonth = date.d;
-            HoursInDay = date.h;
-        }*/
+        public void SetHolidayDate(int holidayNR,int holidayDay)
+        {
+            HolidaysDates[holidayNR -1] = holidayDay;
+        }
+        
+        public void SetHourName(string name, string pluralName)
+        {
+            HourName = name;
+            HourNamePlural = pluralName;
+        }
+
+        public void SetMonthName(string monthName, int monthNR)
+        {
+            MonthNames[monthNR] = monthName;
+        }
+
+        public int GetMonthNr(string monthName)
+        {
+            for (int i = 0; i < MonthNames.Capacity; i++)
+                if (monthName == MonthNames[i])
+                    return i;
+
+            return 2000;
+        }
+
+        public void SaveAHoliday(int whichHoliday, string holidayName)
+        {
+            HolidaysNames[whichHoliday-1] = holidayName;
+        }
+
+        public string GetAHolidayName(int whichHoliday)
+        {
+            return HolidaysNames[whichHoliday - 1];
+        }
+
+        /// <summary>
+        /// Does what it says on the tin. Might throw Argumentoutofrange exception!
+        /// </summary>
+        /// <param name="leapOccurence">How often a leap year occurs. Must be greater than 0</param>
+        /// <param name="leapDay">On which day of the year the leapday occurs</param>
+        public void SetLeapYears(int leapOccurence, int leapDay)
+        {
+            if (leapOccurence <= 0)
+                throw new ArgumentOutOfRangeException($"{nameof(leapOccurence)} must be greater than 0");
+            if (leapDay < 1 && leapDay > DaysInYear)
+                throw new ArgumentOutOfRangeException($"{nameof(leapOccurence)} must be greater than 0");
+
+            LeapYearOccurence = leapOccurence;
+            LeapYearDay = leapDay;
+        }
+        #endregion
+        public override string ToString()
+        {
+            string tempstring1 = "";
+            string tempstring2 = "";
+            string tempstring3 = "";
+
+            foreach (string name in MonthNames)
+                tempstring1 = tempstring1 + ", " + name;
+
+            foreach (int holidayDate in HolidaysDates)
+                tempstring2 = tempstring2 + ", " + holidayDate.ToString();
+
+            foreach (string name in HolidaysNames)
+                tempstring3 = tempstring3 + ", " + name;
+
+            return nameof(CalendarName) + ": " + CalendarName + "\n" + nameof(HourName) + ": " + HourName + "\n" + nameof(HourNamePlural) + ": " + HourNamePlural + "\n" +
+                nameof(MonthNames) + ": " + tempstring1 + "\n" + nameof(MonthsInYear) + ": " + MonthsInYear + "\n" + nameof(DaysInMonth) + ": " + DaysInMonth + "\n" +
+                nameof(HoursInDay) + ": " + HoursInDay + "\n" + nameof(LeapYearOccurence) + ": " + LeapYearOccurence + "\n" + nameof(LeapYearDay) + ": " + LeapYearDay + "\n" +
+                nameof(HolidaysAmount) + ": " + HolidaysAmount + "\n" + nameof(HolidaysDates) + ": " + tempstring2 + "\n" + nameof(HolidaysNames) + ": " + tempstring3 + "\n";
+        }
     }
 
-    class CalendarYear : CalendarEntity
+    public class CalendarYear : CalendarEntity
     {
-        private List<CalendarEntity> YearsMonths;
-        private List<CalendarEvent> YearsEvents;
-        public string YearName { get; private set; }
+        public List<CalendarEntity> YearsMonths;
+        public List<CalendarEvent> YearsEvents;
+        public int YearNumeral;
+        public string YearName { get; set; }
 
-        public CalendarYear(CalendarObjects calendarInfo)
+        public CalendarYear()
         {
-            YearsMonths = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
+            
+        }
+
+        public CalendarYear(CalendarSettings calendarInfo, int ThisYear)
+        {
+            YearsMonths = new List<CalendarEntity>(calendarInfo.MonthsInYear);
             YearsEvents = new List<CalendarEvent>();
+            YearNumeral = ThisYear;
 
             CalendarMonth tempMonth;
-            for (int i = 0; i < YearsMonths.Count; i++)
+            for (int i = 0; i < YearsMonths.Capacity; i++)
             {
-                tempMonth = new CalendarMonth(calendarInfo);
-                YearsMonths[i] = tempMonth;
+                tempMonth = new CalendarMonth(calendarInfo, i);
+                YearsMonths.Add(tempMonth);// = tempMonth;
             }
         }
 
@@ -85,21 +186,26 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarMonth : CalendarEntity
+    public class CalendarMonth : CalendarEntity
     {
-        private List<CalendarEntity> MonthsDays;
-        private List<CalendarEvent> MonthsEvents;
+        public List<CalendarEntity> MonthsDays;
+        public List<CalendarEvent> MonthsEvents;
+        public string MonthName { set; get; }
 
-        public CalendarMonth(CalendarObjects calendarInfo)
+        public CalendarMonth(){}
+
+        public CalendarMonth(CalendarSettings calendarInfo, int nameNr)
         {
-            MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth-1);
+            MonthsDays = new List<CalendarEntity>(calendarInfo.DaysInMonth);
             MonthsEvents = new List<CalendarEvent>();
+            MonthName = calendarInfo.MonthNames[nameNr];
 
             CalendarDay tempDay;
+            // this is an attempted change
             for (int i = 0; i < calendarInfo.DaysInMonth; i++)
             {
                 tempDay = new CalendarDay();
-                MonthsDays[i] = tempDay;
+                MonthsDays.Add(tempDay);//= tempDay;
             }
         }
 
@@ -119,9 +225,9 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarDay : CalendarEntity
+    public class CalendarDay : CalendarEntity
     {
-        List<CalendarEvent> DayEvents;
+        public List<CalendarEvent> DayEvents;
         //private string ObjectID;
         //List<CalendarEntity> CalendarHours;
 
@@ -146,10 +252,15 @@ namespace Fantasymanager
         }
     }
 
-    class CalendarEvent 
+    public class CalendarEvent 
     {
-        private string EventDetails;
-        private string EventID;
+        public string EventDetails;
+        public string EventID;
+
+        public CalendarEvent()
+        {
+
+        }
 
         public CalendarEvent(string eventInfo, string eventName)
         {
