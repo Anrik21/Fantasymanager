@@ -734,7 +734,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(499, 284);
-            this.Controls.Add(this.panel4_tutorial);
             this.Controls.Add(this.Regress_Calendar_Creation);
             this.Controls.Add(this.panel3_tutorial);
             this.Controls.Add(this.panel2_tutorial);
@@ -745,6 +744,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button_exitGenerator);
             this.Controls.Add(this.Progress_Calendar_Creation);
+            this.Controls.Add(this.panel4_tutorial);
             this.Name = "GeneratorForm";
             this.Text = "GeneratorForm";
             this.panel1.ResumeLayout(false);

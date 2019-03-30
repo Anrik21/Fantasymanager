@@ -21,7 +21,7 @@ namespace Fantasymanager
             InitializeComponent();
 
             GeneratorsFilePeon = new Filepeon();
-            guiState = 0;
+            guiState = 0; // I dunno if this is a good way of using UI, but its the way I thought of while working
         }
 
         #region Our 3 main buttons
@@ -34,7 +34,7 @@ namespace Fantasymanager
                 {
                     ourCalendar = new CalendarSettings(nameInput.Text, Convert.ToInt32(MonthInput.Text), 
                                                         Convert.ToInt32(DayInput.Text), Convert.ToInt32(HourInput.Text));
-                    if (ourCalendar.CalendarName == "Forgotten realms")
+                    if (Validation_Debug())
                     {
                         ourCalendar.SetHourName("Bell", "Bells");
                         ourCalendar.SetMonthName("Hammer", 0); ourCalendar.SetMonthName("Alturiak", 1); ourCalendar.SetMonthName("Ches", 2);
@@ -288,10 +288,7 @@ namespace Fantasymanager
 
         private void Panel2Combobox_listselected(object sender, EventArgs e)
         {
-            if (MonthNameInput.Text != "")
-            {
-                ourCalendar.MonthNames[Convert.ToInt32(comboBoxMonthNaming.SelectedItem)] = MonthNameInput.Text;
-            }
+            ourCalendar.SetMonthName(MonthNameInput.Text, Convert.ToInt32(comboBoxMonthNaming.SelectedItem));
         }
         #endregion
 
@@ -464,6 +461,21 @@ namespace Fantasymanager
                 return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Validation to please the big CW
+        /// </summary>
+        /// <returns></returns>
+        private bool Validation_Debug()
+        {
+            if (ourCalendar.CalendarName == "Forgotten realms")
+                if (ourCalendar.MonthsInYear == 12)
+                    if (ourCalendar.DaysInMonth == 30)
+                        if (ourCalendar.HoursInDay == 24)
+                            return true;
+
+            return false;
         }
 
         #endregion
