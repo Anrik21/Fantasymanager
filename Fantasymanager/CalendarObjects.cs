@@ -81,7 +81,12 @@ namespace Fantasymanager
 
         public void SetMonthName(string monthName, int monthNR)
         {
-            MonthNames[monthNR] = monthName;
+            if (monthName == "")
+            {
+                MonthNames[monthNR] = "Month " + (monthNR + 1);
+            }
+            else
+                MonthNames[monthNR] = monthName;
         }
 
         public int GetMonthNr(string monthName)
